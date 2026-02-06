@@ -1,32 +1,60 @@
-import 'package:admin_dashboard/ui/layouts/auth/widgets/links_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:admin_dashboard/ui/layouts/auth/widgets/background_app.dart';
+import 'package:flutter/material.dart';
+
 import 'package:admin_dashboard/ui/layouts/auth/widgets/custom_title.dart';
+import 'package:admin_dashboard/ui/layouts/auth/widgets/links_bar.dart';
 
 class AuthLayout extends StatelessWidget {
   final Widget child;
-  const AuthLayout({super.key, required this.child});
+
+  const AuthLayout({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-     final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Scrollbar(
-        trackVisibility: true,
+        // isAlwaysShown: true,
         child: ListView(
           physics: ClampingScrollPhysics(),
           children: [
-        
-            (size.width > 1000) ?
-            //Desktop
-            _DesktopBody(child: child) :
-            _MobilBody(child: child),
-            //LinksBar
-            LinksBar()
+            (size.width > 1000)
+                ? _DesktopBody(child: child)
+                : _MobileBody(child: child),
+
+            // LinksBar
+            LinksBar(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _MobileBody extends StatelessWidget {
+  final Widget child;
+
+  const _MobileBody({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 1000,
+      color: Colors.black,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: 20),
+          CustomTitle(),
+          Container(width: double.infinity, height: 420, child: child),
+
+          Container(
+            width: double.infinity,
+            height: 400,
+            child: BackgroundApp(),
+          ),
+        ],
       ),
     );
   }
@@ -35,7 +63,7 @@ class AuthLayout extends StatelessWidget {
 class _DesktopBody extends StatelessWidget {
   final Widget child;
 
-  const _DesktopBody({required this.child});
+  const _DesktopBody({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +72,11 @@ class _DesktopBody extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height * 0.95,
-      color: Colors.red,
+      color: Colors.black,
       child: Row(
         children: [
-          BackgroundApp(),
+          // Twitter Background
+          Expanded(child: BackgroundApp()),
 
           // View Container
           Container(
@@ -63,36 +92,6 @@ class _DesktopBody extends StatelessWidget {
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class _MobilBody extends StatelessWidget {
-  final Widget child;
-  const _MobilBody({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: 20),
-          CustomTitle(),
-          Container(
-            width: double.infinity,
-            height: 420,
-            child: child,
-          ),
-          Container(
-            width: double.infinity,
-            height: 400,
-            child: BackgroundApp(),
-          )
         ],
       ),
     );
